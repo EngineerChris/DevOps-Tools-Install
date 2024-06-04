@@ -25,10 +25,13 @@ sed -i "s/.*#host_key_checking = False/host_key_checking = False/g" /etc/ansible
 sed -i "s/.*#enable_plugins = host_list, virtualbox, yaml, constructed/enable_plugins = aws_ec2/g" /etc/ansible/ansible.cfg
 ansible-galaxy collection install amazon.aws
 
-# Enable Password Authentication and Grant Sudo Privilege
-sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+# Enable Password Authentication and Grant Sudo Privilege by updating the sudoer file
+sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config    # giving authentication 
 systemctl restart sshd
-echo "ansibleadmin ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+echo "ansibleadmin ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers   #giving authorization
+
+# sshd_config file is used for authentication 
+# /etc/sudoers file is for authorization 
 
 # Apache Maven Installation/Config
 #sudo wget https://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
